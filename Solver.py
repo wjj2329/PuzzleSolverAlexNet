@@ -53,7 +53,6 @@ print (type(Y))
 print(X.shape)
 print(Y.shape)
 print (matrixsize)
-exit()
 
 # Building 'AlexNet'
 network = input_data(shape=[None, matrixsize, matrixsize, 3])
