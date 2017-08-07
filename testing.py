@@ -12,51 +12,19 @@ Links:
 """
 
 from __future__ import division, print_function, absolute_import
-import pictureslicernew
 
 import tflearn
-import numpy as np
-
 from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.normalization import local_response_normalization
 from tflearn.layers.estimator import regression
 
-newData=True
-numofpixels=200
-while(numofpixels%4!=0):  #unfortunaly we can't cut pixels in half MUST BE divisble by 4 for my pictureslicer to work
-     numofpixels+=1
-  #temp=cut.cutter("donaldtrump.jpg", numofpixels)
-  #temp.sliceup()
-segmentsForTesting=None
-segmentsForTraining=None
-segmentsForTraining=pictureslicernew.newsegs(numofpixels, "training", True) #this is the size may or may not be a good starting point
-segmentsForTesting=pictureslicernew.newsegs(numofpixels, "test", True)
-if newData:
-   segmentsForTraining.calculatesegments(100,"precalctraining")
-   segmentsForTesting.calculatesegments(100,"precalctesting")
-matrixsize=numofpixels/2
-segmentsForTraining.gatherFiles("precalctraining")
-segmentsForTesting.gatherFiles("precalctesting") 
-arrayofconnections=[]
-while len(segmentsForTraining.files)>0:
-  arrayofconnections+=segmentsForTraining.getBatch()
-while len(segmentsForTesting.files)>0:
-  arrayofconnections+=segmentsForTesting.getBatch()
-
-X=[np.asarray(i[0]) for i in arrayofconnections]# flattern for now will need to convert it to 2d. Just a starting point
-Y=[i[1] for i in arrayofconnections]
-X=np.asarray(X)
-Y=np.asarray(Y)  
-print (type(X))
-print (type(Y))
-print(X.shape)
-print(Y.shape)
-print (matrixsize)
-exit()
-
+import tflearn.datasets.oxflower17 as oxflower17
+X, Y = oxflower17.load_data(one_hot=True, resize_pics=(227, 227))
+print (Y.shape)
+print("YOURMOM")
 # Building 'AlexNet'
-network = input_data(shape=[None, matrixsize, matrixsize, 3])
+network = input_data(shape=[None, 227, 227, 3])
 network = conv_2d(network, 96, 11, strides=4, activation='relu')
 network = max_pool_2d(network, 3, strides=2)
 network = local_response_normalization(network)
